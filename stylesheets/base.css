@@ -16,7 +16,7 @@ h1 {
 }
 
 body {
-    overflow-x: hidden; /* Убиваем горизонтальный скролл */
+    overflow-x: hidden;
     max-width: 100%;
     background-image: url(../assets/images/main-bg.svg);
     background-size: cover;
@@ -26,11 +26,7 @@ body {
     flex-direction: column;
 }
 
-/* Хедер как на фото */
-header {
-
-}
-
+/* Хедер */
 .nav-container {
     display: flex;
     justify-content: space-between;
@@ -52,7 +48,7 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 0px;
+    padding: 0;
     box-sizing: border-box;
     align-items: center;
 }
@@ -64,8 +60,8 @@ header {
     font-size: 1.09375vw;
     padding: 0.4167vw 0.8333vw;
     transition: background-color 0.2s ease;
-    white-space: nowrap; 
-    display: inline-flex;     
+    white-space: nowrap;
+    display: inline-flex;
     align-items: center;
     gap: 0.4167vw;
 }
@@ -73,7 +69,7 @@ header {
 .nav-link::before {
     font-size: 0.9375vw;
     content: "- > ";
-    visibility: hidden;    
+    visibility: hidden;
 }
 
 .nav-link::after {
@@ -119,6 +115,7 @@ header {
 }
 
 .about-button {
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,6 +123,11 @@ header {
     height: 3.18vw;
     background-image: url(../assets/images/about-button.svg);
     background-size: cover;
+    transition: transform 0.2s ease;
+}
+
+.about-button:hover {
+    transform: scale(1.05);
 }
 
 .about-button a {
@@ -247,6 +249,7 @@ header {
 }
 
 .zin-button {
+    z-index: 100;
     position: absolute;
     left: 54.43%;
     top: 90.7%;
@@ -257,6 +260,11 @@ header {
     justify-content: center;
     background-image: url(../assets/images/zin-button.svg);
     background-size: cover;
+    transition: transform 0.2s ease;
+}
+
+.zin-button:hover {
+    transform: scale(1.05);
 }
 
 .zin-button a {
@@ -271,10 +279,9 @@ header {
     display: flex;
     flex-direction: column;
     position: relative;
-    /* Убрали overflow-x: clip, чтобы 4-й экран мог накладываться */
     width: 100%;
     height: 56.25vw;
-    z-index: 5; /* 3-й экран лежит ПОД 4-м экраном */
+    z-index: 100;
 }
 
 .screen-3 p {
@@ -297,14 +304,15 @@ header {
     transform: translateX(-50%);
     top: 26%;
     perspective: 62.5vw;
-    transform-style: preserve-3d;
+    
 }
 
 .rings img {
-    will-change: transform; /* Оптимизация для плавности */
+    will-change: transform;
 }
 
 .blue-rings {
+    z-index: 90;
     width: 60.05vw;
     height: 15.68vw;
     position: absolute;
@@ -313,59 +321,42 @@ header {
     transform: translate(-50%, -50%);
 }
 
-.left-big-ring {
+.left-big-ring,
+.right-big-ring {
+    z-index: 90;
     position: absolute;
     width: 24.53vw;
     height: 24.53vw;
-    left: 9.11%;
     top: 0;
     transform-origin: center center;
     animation: spin-x-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.left-big-ring {
+    left: 9.11%;
 }
 
 .right-big-ring {
-    position: absolute;
-    width: 24.53vw;
-    height: 24.53vw;
     left: 49.87%;
-    top: 0;
-    transform-origin: center center;
-    animation: spin-x-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-@keyframes spin-x-dynamic {
-    0% { transform: rotateX(0deg); }
-    40% { transform: rotateX(180deg); }
-    50% { transform: rotateX(180deg); }
-    90% { transform: rotateX(360deg); }
-    100% { transform: rotateX(360deg); }
+.left-small-ring,
+.right-small-ring {
+    z-index: 90;
+    position: absolute;
+    width: 19.27vw;
+    height: 19.27vw;
+    top: 50%;
+    transform-origin: center center;
+    animation: spin-y-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 .left-small-ring {
-    position: absolute;
-    width: 19.27vw;
-    height: 19.27vw;
     left: 17.9%;
-    top: 50%;
-    transform-origin: center center;
-    animation: spin-y-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 .right-small-ring {
-    position: absolute;
-    width: 19.27vw;
-    height: 19.27vw;
     left: 49.78%;
-    top: 50%;
-    transform-origin: center center;
-    animation: spin-y-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes spin-y-dynamic {
-    0%, 10% { transform: translateY(-50%) rotateY(0deg); }
-    50% { transform: translateY(-50%) rotateY(180deg); }
-    60% { transform: translateY(-50%) rotateY(180deg); }
-    100% { transform: translateY(-50%) rotateY(360deg); }
 }
 
 .center-ring {
@@ -375,11 +366,6 @@ header {
     left: 50%;
     top: 50%;
     animation: spin-flat 15s linear infinite;
-}
-
-@keyframes spin-flat {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .head {
@@ -392,6 +378,7 @@ header {
 }
 
 .bg-web-button {
+    z-index: 100;
     width: 13.18vw;
     height: 3.18vw;
     background-image: url(../assets/images/bg-web-button.svg);
@@ -403,6 +390,11 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.bg-web-button:hover {
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 .bg-web-button a {
@@ -425,14 +417,35 @@ header {
     top: 83.89%;
 }
 
-/* --- НАСТРОЙКИ 4 ЭКРАНА --- */
+/* Анимации */
+@keyframes spin-x-dynamic {
+    0% { transform: rotateX(0deg); }
+    40% { transform: rotateX(180deg); }
+    50% { transform: rotateX(180deg); }
+    90% { transform: rotateX(360deg); }
+    100% { transform: rotateX(360deg); }
+}
+
+@keyframes spin-y-dynamic {
+    0%, 10% { transform: translateY(-50%) rotateY(0deg); }
+    50% { transform: translateY(-50%) rotateY(180deg); }
+    60% { transform: translateY(-50%) rotateY(180deg); }
+    100% { transform: translateY(-50%) rotateY(360deg); }
+}
+
+@keyframes spin-flat {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* --- 4 ЭКРАН --- */
 .screen-4 {
     position: relative;
     width: 100%;
     height: 56.25vw;
-    min-height: 44.2708vw; /* Защита от потери кнопки на малых экранах */
+    min-height: 44.2708vw;
     z-index: 10;
-    clip-path: inset(-41.6667vw -26.0417vw 0 -26.0417vw); /* Позволяет баннеру вылетать наверх */
+    clip-path: inset(-41.6667vw -26.0417vw 0 -26.0417vw);
     display: flex;
     flex-direction: column;
 }
@@ -443,19 +456,18 @@ header {
     font-weight: 500;
 }
 
-/* Фиксируем Canvas точно по размеру блока + вылет наверх */
 .screen-4 canvas {
     position: absolute;
     top: -400px;
     left: 0;
-    width: 100% !important; 
+    width: 100% !important;
     height: calc(100% + 400px) !important;
-    z-index: 1; /* Холст над фоном */
-    pointer-events: none; /* Пропускаем клики сквозь холст на 3-й экран */
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* Возвращаем полные стили для HTML-кнопки */
 .banner-btn {
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;
@@ -465,57 +477,48 @@ header {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 0.5208vw; 
+    border-radius: 0.5208vw;
     cursor: pointer;
     text-decoration: none;
-    
-    /* --- Центрируем текст внутри кнопки --- */
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 0.6vw;
-    
-    /* --- Стили самого текста (перенесли сюда) --- */
     font-size: 1.25vw;
     font-style: italic;
     font-weight: 500;
     color: #A5A5A5;
-
-    /* Технические настройки для Matter.js */
-    pointer-events: auto; 
+    pointer-events: auto;
     transform-origin: center center;
     will-change: transform;
     z-index: 10;
+    /* Эффект наведения отсутствует */
 }
 
-
-/* =========================================
-   БЕГУЩАЯ СТРОКА (НАШИ МЕРОПРИЯТИЯ)
-========================================= */
+/* Бегущая строка */
 .marquee-container {
     position: absolute;
-    top: 0.78125vw; /* Регулируйте высоту, чтобы нижняя линия совпала с точкой крепления веревок */
+    top: 0.78125vw;
     left: 0;
     width: 100%;
     overflow: hidden;
     border-top: 0.26vw solid #D9D9D9;
     border-bottom: 0.26vw solid #D9D9D9;
     padding: 0.1vw 0;
-    z-index: 2; /* Находится под кнопкой, но над фоном */
-    pointer-events: none; /* Мышка проходит сквозь текст, чтобы не мешать тянуть баннер */
+    z-index: 2;
+    pointer-events: none;
 }
 
 .marquee-track {
     display: flex;
     width: fit-content;
-    /* Время полного круга. Уменьшите 20s, если нужно быстрее */
-    animation: marquee-scroll 20s linear infinite; 
+    animation: marquee-scroll 20s linear infinite;
 }
 
 .marquee-content {
     display: flex;
-    gap: 3vw; /* Расстояние между словами */
-    padding-right: 3vw; /* Отступ перед началом второго блока */
+    gap: 3vw;
+    padding-right: 3vw;
 }
 
 .marquee-content span {
@@ -527,44 +530,33 @@ header {
 }
 
 @keyframes marquee-scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%); /* Сдвигаем ровно на 1 блок, чтобы создать бесшовную петлю */
-    }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
-/* --- СТИЛИ ДЛЯ НАДПИСИ "СОМНОЛОГИЧЕСКАЯ ВЫСТАВКА" --- */
+/* Текст "Сомнологическая выставка" */
 .top-text {
     position: absolute;
     top: 0;
     left: 0;
-    width: 16.875vw;   /* Ширина из макета */
-    height: 4.2vw;   /* Высота из макета */
-    
-    /* Типографика из Figma */
+    width: 16.875vw;
+    height: 4.2vw;
     color: #ffffff;
     font-family: 'Roboto', sans-serif;
     font-size: 1.6vw;
-    font-weight: 700; /* Bold */
-    line-height: 1.6vw; /* 100% */
-    letter-spacing: -0.0167vw; /* -1% */
+    font-weight: 700;
+    line-height: 1.6vw;
+    letter-spacing: -0.0167vw;
     text-align: center;
-    
-    /* Центрируем две строки внутри блока */
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Важные технические параметры */
-    pointer-events: none; /* Пропускаем клики сквозь текст, чтобы можно было за него тянуть */
+    pointer-events: none;
     transform-origin: center center;
     will-change: transform;
-    z-index: 10; /* Над физическим холстом */
+    z-index: 10;
 }
 
-/* Делаем так, чтобы canvas занимал 100% размера новых div-контейнеров */
 .underlay div canvas {
     display: block;
     width: 100% !important;
@@ -573,100 +565,7 @@ header {
     pointer-events: none;
 }
 
-/* Включаем перспективу для контейнера, чтобы вращение по X выглядело объемно */
-.rings {
-    width: 60.05vw;
-    height: 24.53vw;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 26%;
-    perspective: 62.5vw; /* Глубина 3D */
-    transform-style: preserve-3d;
-}
-
-.rings img {
-    will-change: transform; /* Оптимизация для плавности */
-}
-
-/* =========================================
-   1. ЦЕНТРАЛЬНОЕ КОЛЬЦО (Плоское вращение)
-========================================= */
-.center-ring {
-    position: absolute;
-    width: 24.48vw;
-    height: 24.48vw;
-    left: 50%;
-    top: 50%;
-    animation: spin-flat 15s linear infinite; /* Ускорили с 25s до 15s */
-}
-
-@keyframes spin-flat {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* =========================================
-   2. БОКОВЫЕ БОЛЬШИЕ КОЛЬЦА (Ось X, с ускорением и паузой)
-========================================= */
-.left-big-ring {
-    position: absolute;
-    width: 24.53vw;
-    height: 24.53vw;
-    left: 9.11%;
-    top: 0;
-    transform-origin: center center;
-    animation: spin-x-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-.right-big-ring {
-    position: absolute;
-    width: 24.53vw;
-    height: 24.53vw;
-    left: 49.87%;
-    top: 0;
-    transform-origin: center center;
-    animation: spin-x-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite; 
-}
-
-@keyframes spin-x-dynamic {
-    0% { transform: rotateX(0deg); }
-    40% { transform: rotateX(180deg); }
-    50% { transform: rotateX(180deg); }
-    90% { transform: rotateX(360deg); }
-    100% { transform: rotateX(360deg); }
-}
-
-/* =========================================
-   3. МАЛЫЕ КОЛЬЦА (Ось Y, движение в противофазе)
-========================================= */
-.left-small-ring {
-    position: absolute;
-    width: 19.27vw;
-    height: 19.27vw;
-    left: 17.9%;
-    top: 50%;
-    transform-origin: center center;
-    animation: spin-y-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-.right-small-ring {
-    position: absolute;
-    width: 19.27vw;
-    height: 19.27vw;
-    left: 49.78%;
-    top: 50%;
-    transform-origin: center center;
-    animation: spin-y-dynamic 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes spin-y-dynamic {
-    0%, 10% { transform: translateY(-50%) rotateY(0deg); }
-    50% { transform: translateY(-50%) rotateY(180deg); }
-    60% { transform: translateY(-50%) rotateY(180deg); }
-    100% { transform: translateY(-50%) rotateY(360deg); }
-}
-
+/* Футер */
 .footer-container {
     display: flex;
     justify-content: space-between;
@@ -687,7 +586,7 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 0px;
+    padding: 0;
     box-sizing: border-box;
     align-items: center;
 }
@@ -698,8 +597,8 @@ header {
     font-weight: 500;
     font-size: 1.04vw;
     padding: 0.4167vw 1.8333vw;
-    white-space: nowrap; 
-    display: inline-flex;     
+    white-space: nowrap;
+    display: inline-flex;
     align-items: center;
     gap: 0.4167vw;
 }
