@@ -57,24 +57,31 @@ class Sketch {
     this.settings = {
       grid: 50,      // Разрешение сетки искажений
       mouse: 0.15,   // Радиус действия мыши
-      strength: 0.4, // Сила смазывания
+      strength: 0.3, // Сила смазывания (сделал чуть мягче для гладкости)
       relaxation: 0.9 // Затухание
     };
 
     this.mouse = { x: 0, y: 0, vX: 0, vY: 0, prevX: 0, prevY: 0 };
 
-    // ГЛОБАЛЬНЫЙ СЛУШАТЕЛЬ МЫШИ (решает проблему pointer-events: none)
+    // --- ИСПРАВЛЕНИЕ: Локальные координаты мыши ---
     window.addEventListener('mousemove', (e) => {
-      // Нормализуем координаты относительно всего окна
-      this.mouse.x = e.clientX / window.innerWidth;
-      this.mouse.y = 1.0 - (e.clientY / window.innerHeight);
+      // Получаем точные размеры и позицию контейнера на экране
+      const rect = this.container.getBoundingClientRect();
       
-      // Вычисляем скорость
-      this.mouse.vX = this.mouse.x - this.mouse.prevX;
-      this.mouse.vY = this.mouse.y - this.mouse.prevY;
+      // Вычисляем позицию мыши строго внутри этого контейнера от 0 до 1
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = 1.0 - ((e.clientY - rect.top) / rect.height); // Y переворачиваем для WebGL
       
-      this.mouse.prevX = this.mouse.x;
-      this.mouse.prevY = this.mouse.y;
+      // Считаем скорость движения
+      this.mouse.vX = x - this.mouse.prevX;
+      this.mouse.vY = y - this.mouse.prevY;
+      
+      // Обновляем координаты
+      this.mouse.x = x;
+      this.mouse.y = y;
+
+      this.mouse.prevX = x;
+      this.mouse.prevY = y;
     });
 
     this.addObjects();
@@ -106,19 +113,20 @@ class Sketch {
     const size = width * height;
     const data = new Float32Array(size * 4);
     
+    // Заполняем сетку
     for (let i = 0; i < size; i++) {
-      let r = Math.random() * 255 - 125;
-      let r1 = Math.random() * 255 - 125;
-
       const stride = i * 4;
-      data[stride] = r;
-      data[stride + 1] = r1;
-      data[stride + 2] = r;
+      data[stride] = 0;
+      data[stride + 1] = 0;
+      data[stride + 2] = 0;
       data[stride + 3] = 1;
     }
 
     this.texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat, THREE.FloatType);
-    this.texture.magFilter = this.texture.minFilter = THREE.NearestFilter;
+    
+    // --- ИСПРАВЛЕНИЕ: Сглаживание пикселей ---
+    // LinearFilter размывает переходы между ячейками сетки, делая эффект плавным
+    this.texture.magFilter = this.texture.minFilter = THREE.LinearFilter;
 
     if (this.material) {
       this.material.uniforms.uDataTexture.value = this.texture;
@@ -129,7 +137,6 @@ class Sketch {
   addObjects() {
     this.regenerateGrid();
     
-    // Загружаем текстуру из переданной картинки
     let texture = new THREE.TextureLoader().load(this.img.src);
     texture.needsUpdate = true;
 
@@ -141,7 +148,8 @@ class Sketch {
       transparent: true,
       uniforms: {
         time: { value: 0 },
-        resolution: { value: new THREE.Vector4() },uTexture: { value: texture },
+        resolution: { value: new THREE.Vector4() },
+        uTexture: { value: texture },
         uDataTexture: { value: this.texture },
       },
       vertexShader: vertexShader,
@@ -157,15 +165,17 @@ class Sketch {
     let data = this.texture.image.data;
 
     let gridMouseX = this.size * this.mouse.x;
-    let gridMouseY = this.size * this.mouse.y; // Y уже инвертирован в слушателе
+    let gridMouseY = this.size * this.mouse.y; 
     let maxDist = this.size * this.settings.mouse;
-    let aspect = this.height / this.width;
+    let aspect = this.width / this.height; // Соотношение сторон для правильного круга
 
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
 
-        // ИСПРАВЛЕНА ОШИБКА ЗДЕСЬ (возведение в степень)
-        let distance = (Math.pow(gridMouseX - i, 2)) / aspect + Math.pow(gridMouseY - j, 2);
+        // Корректируем дистанцию с учетом соотношения сторон
+        let distanceX = (gridMouseX - i) * aspect;
+        let distanceY = (gridMouseY - j);
+        let distance = Math.pow(distanceX, 2) + Math.pow(distanceY, 2);
         let maxDistSq = maxDist ** 2;
 
         if (distance < maxDistSq) {
@@ -185,6 +195,7 @@ class Sketch {
       data[i + 1] *= this.settings.relaxation;
     }
 
+    // Замедляем инерцию мыши
     this.mouse.vX *= 0.9;
     this.mouse.vY *= 0.9;
     this.texture.needsUpdate = true;
@@ -205,11 +216,9 @@ class Sketch {
 // --- ИНИЦИАЛИЗАЦИЯ НА СТРАНИЦЕ ---
 // ==========================================
 window.addEventListener("load", () => {
-    // Находим все картинки внутри блоков underlay
     const underlayImages = document.querySelectorAll('.underlay img');
 
     underlayImages.forEach(imgElement => {
-        // Ждем загрузки картинки (чтобы WebGL мог взять её размеры и текстуру)
         if (imgElement.complete) {
             initSketch(imgElement);
         } else {
@@ -218,17 +227,12 @@ window.addEventListener("load", () => {
     });
 
     function initSketch(imgElement) {
-        // Создаем контейнер-заменитель
         const container = document.createElement('div');
-        container.className = imgElement.className; // Копируем классы (позиционирование, размеры)
+        container.className = imgElement.className; 
         
-        // Вставляем контейнер перед картинкой
         imgElement.parentNode.insertBefore(container, imgElement);
-        
-        // Прячем оригинальную картинку
         imgElement.style.display = 'none';
 
-        // Запускаем WebGL
         new Sketch({
             dom: container,
             img: imgElement
