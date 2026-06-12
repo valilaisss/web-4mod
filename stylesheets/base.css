@@ -1,0 +1,543 @@
+/* style.css - Общие стили для всего сайта */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 3.33vw;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+body {
+    overflow-x: hidden; /* Убиваем горизонтальный скролл */
+    max-width: 100%;
+    background-image: url(../assets/images/main-bg.svg);
+    background-size: cover;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Хедер как на фото */
+header {
+
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    height: 3.39vw;
+    min-height: 60px;
+    width: 100%;
+    background-image: url(../assets/images/bg-nav.svg);
+    background-size: cover;
+    position: relative;
+}
+
+.nav-links {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    transform: translateY(-25%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.nav-link {
+    color: #797979;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 21px;
+    padding: 8px 16px;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; 
+    display: inline-flex;     
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link::before {
+    font-size: 18px;
+    content: "- > ";
+    visibility: hidden;    
+}
+
+.nav-link::after {
+    font-size: 18px;
+    content: " < -";
+    visibility: hidden;
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after {
+    visibility: visible;
+}
+
+/* Контентная часть */
+.screen-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 4.69vw;
+    position: relative;
+    overflow-x: clip;
+    width: 100%;
+    height: 56.25vw;
+}
+
+.head-text {
+    width: 96.46vw;
+    height: auto;
+    padding-left: 2vw;
+}
+
+.about-container {
+    padding-left: 2vw;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 2.86vw;
+}
+
+.about-text {
+    font-size: 1.67vw;
+    font-weight: 500;
+    color: #D7E8F6;
+}
+
+.about-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 11.72vw;
+    height: 3.18vw;
+    background-image: url(../assets/images/about-button.svg);
+    background-size: cover;
+}
+
+.about-button a {
+    font-size: 1.25vw;
+    font-style: italic;
+    font-weight: 500;
+    color: #A5A5A5;
+    text-decoration: none;
+}
+
+.underlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow-x: clip;
+}
+
+.big-blue-pattern {
+    width: 91.2vw;
+    height: 61.15vw;
+    position: absolute;
+    top: -16%;
+    left: 39.22%;
+}
+
+.middle-blue-pattern {
+    width: 65.47vw;
+    height: 55.73vw;
+    position: absolute;
+    top: 24.30%;
+    left: -49.58%;
+}
+
+.left-white-pattern {
+    width: 58.65vw;
+    height: 64.06vw;
+    position: absolute;
+    left: -38.80%;
+    top: 23.43%;
+}
+
+.big-white-pattern {
+    width: 56.67vw;
+    height: 65.57vw;
+    position: absolute;
+    left: 73.91%;
+    top: 24.35%;
+}
+
+.screen-2 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: clip;
+    width: 100%;
+    height: 56.25vw;
+}
+
+.screen-2 p {
+    color: #8A8A8A;
+    font-size: 1.67vw;
+    font-weight: 500;
+}
+
+.zin-header {
+    position: absolute;
+    left: 50%;
+    top: 8.24%;
+    transform: translateX(-50%);
+}
+
+.aura-header {
+    width: 53.7vw;
+    height: 8.39vw;
+    position: absolute;
+    left: 50%;
+    top: 4.5%;
+    transform: translateX(-50%);
+}
+
+.zin-main {
+    width: 27.76vw;
+    height: 18.75vw;
+    position: absolute;
+    left: 50%;
+    top: 20.5%;
+    transform: translateX(-50%);
+}
+
+.lines-zin {
+    position: absolute;
+    width: 52.66vw;
+    height: 31.15vw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 33.61%;
+}
+
+.zin-text-1 {
+    position: absolute;
+    left: 2.4%;
+    top: 21.30%;
+}
+
+.zin-text-2 {
+    position: absolute;
+    left: 72%;
+    top: 17.96%;
+}
+
+.zin-text-3 {
+    position: absolute;
+    left: 27.19%;
+    top: 74.5%;
+}
+
+.zin-button {
+    position: absolute;
+    left: 54.43%;
+    top: 90.7%;
+    width: 13.33vw;
+    height: 3.18vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../assets/images/zin-button.svg);
+    background-size: cover;
+}
+
+.zin-button a {
+    font-size: 1.25vw;
+    font-style: italic;
+    font-weight: 500;
+    color: #A5A5A5;
+    text-decoration: none;
+}
+
+.screen-3 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* Убрали overflow-x: clip, чтобы 4-й экран мог накладываться */
+    width: 100%;
+    height: 56.25vw;
+    z-index: 5; /* 3-й экран лежит ПОД 4-м экраном */
+}
+
+.screen-3 p {
+    color: #D7E8F6;
+    font-size: 1.67vw;
+    font-weight: 500;
+}
+
+.web-header {
+    position: absolute;
+    left: 2.5%;
+    top: 5.74%;
+}
+
+.rings {
+    width: 60.05vw;
+    height: 24.53vw;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 26%;
+}
+
+.blue-rings {
+    width: 60.05vw;
+    height: 15.68vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.left-big-ring {
+    position: absolute;
+    width: 24.53vw;
+    height: 24.53vw;
+    left: 9.11%;
+    top: 0;
+}
+
+.right-big-ring {
+    position: absolute;
+    width: 24.53vw;
+    height: 24.53vw;
+    left: 49.87%;
+    top: 0;
+}
+
+.left-small-ring {
+    position: absolute;
+    width: 19.27vw;
+    height: 19.27vw;
+    left: 17.9%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.right-small-ring {
+    position: absolute;
+    width: 19.27vw;
+    height: 19.27vw;
+    left: 49.78%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.center-ring {
+    position: absolute;
+    width: 24.48vw;
+    height: 24.48vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.head {
+    position: absolute;
+    width: 14.84vw;
+    height: 19.48vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bg-web-button {
+    width: 13.18vw;
+    height: 3.18vw;
+    background-image: url(../assets/images/bg-web-button.svg);
+    background-size: cover;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-web-button a {
+    font-size: 1.25vw;
+    font-style: italic;
+    font-weight: 500;
+    color: #A5A5A5;
+    text-decoration: none;
+}
+
+.web-text-1 {
+    position: absolute;
+    left: 23.44%;
+    top: 76.48%;
+}
+
+.web-text-2 {
+    position: absolute;
+    left: 36.72%;
+    top: 83.89%;
+}
+
+/* --- НАСТРОЙКИ 4 ЭКРАНА --- */
+.screen-4 {
+    position: relative;
+    width: 100%; 
+    height: 100vh; 
+    min-height: 850px; /* Защита от потери кнопки на малых экранах */
+    z-index: 10;
+    clip-path: inset(-800px -500px 0px -500px); /* Позволяет баннеру вылетать наверх */
+    display: flex;
+    flex-direction: column;
+}
+
+.screen-4 p {
+    color: #D9D9D9;
+    font-size: 1.67vw;
+    font-weight: 500;
+}
+
+/* Фиксируем Canvas точно по размеру блока + вылет наверх */
+.screen-4 canvas {
+    position: absolute;
+    top: -400px;
+    left: 0;
+    width: 100% !important; 
+    height: calc(100% + 400px) !important;
+    z-index: 1; /* Холст над фоном */
+    pointer-events: none; /* Пропускаем клики сквозь холст на 3-й экран */
+}
+
+/* Возвращаем полные стили для HTML-кнопки */
+/* Возвращаем полные стили для HTML-кнопки */
+.banner-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11.71vw;
+    height: 4.01vw;
+    background-image: url(../assets/images/button-banners.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px; 
+    cursor: pointer;
+    text-decoration: none;
+    
+    /* --- Центрируем текст внутри кнопки --- */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.6vw;
+    
+    /* --- Стили самого текста (перенесли сюда) --- */
+    font-size: 1.25vw;
+    font-style: italic;
+    font-weight: 500;
+    color: #A5A5A5;
+
+    /* Технические настройки для Matter.js */
+    pointer-events: auto; 
+    transform-origin: center center;
+    will-change: transform;
+    z-index: 10;
+}
+
+
+/* =========================================
+   БЕГУЩАЯ СТРОКА (НАШИ МЕРОПРИЯТИЯ)
+========================================= */
+.marquee-container {
+    position: absolute;
+    top: 15px; /* Регулируйте высоту, чтобы нижняя линия совпала с точкой крепления веревок */
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    border-top: 0.26vw solid #D9D9D9;
+    border-bottom: 0.26vw solid #D9D9D9;
+    padding: 0.1vw 0;
+    z-index: 2; /* Находится под кнопкой, но над фоном */
+    pointer-events: none; /* Мышка проходит сквозь текст, чтобы не мешать тянуть баннер */
+}
+
+.marquee-track {
+    display: flex;
+    width: fit-content;
+    /* Время полного круга. Уменьшите 20s, если нужно быстрее */
+    animation: marquee-scroll 20s linear infinite; 
+}
+
+.marquee-content {
+    display: flex;
+    gap: 3vw; /* Расстояние между словами */
+    padding-right: 3vw; /* Отступ перед началом второго блока */
+}
+
+.marquee-content span {
+    color: #ffffff;
+    font-size: 3.33vw;
+    font-weight: 500;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Сдвигаем ровно на 1 блок, чтобы создать бесшовную петлю */
+    }
+}
+
+/* --- СТИЛИ ДЛЯ НАДПИСИ "СОМНОЛОГИЧЕСКАЯ ВЫСТАВКА" --- */
+.top-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16.875vw;   /* Ширина из макета */
+    height: 4.2vw;   /* Высота из макета */
+    
+    /* Типографика из Figma */
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6vw;
+    font-weight: 700; /* Bold */
+    line-height: 1.6vw; /* 100% */
+    letter-spacing: -0.32px; /* -1% */
+    text-align: center;
+    
+    /* Центрируем две строки внутри блока */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Важные технические параметры */
+    pointer-events: none; /* Пропускаем клики сквозь текст, чтобы можно было за него тянуть */
+    transform-origin: center center;
+    will-change: transform;
+    z-index: 10; /* Над физическим холстом */
+}
+
+/* Делаем так, чтобы canvas занимал 100% размера новых div-контейнеров */
+.underlay div canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    outline: none;
+    pointer-events: none;
+}
