@@ -18,16 +18,16 @@ class PixelSimulation {
         this.canvas.style.zIndex = '3'; 
 
         this.particles = [];
-        this.colors = ['#ffffff', '#D7E8F6', '#8A8A8A'];
+        this.colors = ['#8A8A8A'];
         
         // ==========================================
         // НАСТРОЙКИ ДЛЯ НЕПОДВИЖНОГО СЛЕДА
         // ==========================================
         this.settings = {
-            dispersion: 0.8,      // Разброс при появлении
-            friction: 0.90,       // Трение (быстрее останавливаются в воздухе)
+            dispersion: 2,      // Разброс при появлении
+            friction: 1,       // Трение (быстрее останавливаются в воздухе)
             particlesPerFrame: 1, // Строго 1 пиксель за микродвижение
-            pixelSize: 5,         // ИЗМЕНЕНИЕ: Единый фиксированный размер для всех пикселей
+            pixelSize: 7,         // Единый фиксированный размер для всех пикселей
             lifeDecay: 0.004      // Скорость исчезновения
         };
 
@@ -72,7 +72,7 @@ class PixelSimulation {
             this.particles.push({
                 x: spawnX, 
                 y: spawnY,
-                size: this.settings.pixelSize, // Присваиваем всем одинаковый размер из настроек
+                size: this.settings.pixelSize, // Одинаковый размер
                 
                 // Начальная скорость (дрейф при появлении)
                 vx: (Math.random() - 0.5) * this.settings.dispersion,
@@ -97,8 +97,11 @@ class PixelSimulation {
             p.y += p.vy;
             p.life -= this.settings.lifeDecay; 
 
-            // Отрисовка: пиксель всегда на 100% непрозрачный
-            this.ctx.globalAlpha = 1; 
+            // ВОЗВРАЩЕНО: Плавное затухание
+            // Пиксель остается на 100% ярким первые 70% жизни (пока p.life > 0.3)
+            // Последние 30% жизни он начинает плавно растворяться
+            const decayThreshold = 0.3; 
+            this.ctx.globalAlpha = p.life > decayThreshold ? 1 : Math.max(p.life / decayThreshold, 0);
 
             this.ctx.fillStyle = p.color;
             this.ctx.fillRect(p.x, p.y, p.size, p.size); 
