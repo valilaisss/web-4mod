@@ -1,14 +1,26 @@
 window.addEventListener("load", () => {
+    // --- 1. ПРОВЕРКА НА МОБИЛКУ ---
+    if (window.innerWidth <= 360) {
+        // На мобилке просто сдвигаем нативный скролл в центр при загрузке
+        const mobScroll = document.getElementById('mob-scroll');
+        if (mobScroll) {
+            setTimeout(() => {
+                mobScroll.scrollLeft = (mobScroll.scrollWidth - window.innerWidth) / 2;
+            }, 50);
+        }
+        // 🛑 ВАЖНО: Выходим из скрипта, чтобы физика Matter.js не запускалась
+        return; 
+    }
+
+    // --- 2. ЛОГИКА ДЛЯ ПК (ФИЗИКА БАННЕРОВ) ---
     const screen4 = document.querySelector('.screen-4');
     const marquee = document.querySelector('.marquee-container');
-    
-    // Находим HTML-элементы
     const domButton = document.getElementById('html-button');
     const domTopText = document.getElementById('html-top-text');
 
     if (!screen4) return;
 
-    // --- ФУНКЦИЯ-КОНВЕРТЕР (пиксели из Figma -> реальные пиксели на экране) ---
+    // Конвертер для десктопа (от 1920px)
     const vw = (px) => (px / 1920) * window.innerWidth;
 
     const Engine = Matter.Engine,
@@ -25,7 +37,6 @@ window.addEventListener("load", () => {
     const engine = Engine.create(), world = engine.world;
     engine.gravity.y = 1.4;
 
-    // СТРОГО 400! Не переводим в vw, так как в CSS жестко написано top: -400px
     const overlapY = 400; 
 
     let baseWidth = screen4.clientWidth;
@@ -47,7 +58,7 @@ window.addEventListener("load", () => {
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    // --- ДИНАМИЧЕСКИЙ РАСЧЕТ РАЗМЕРОВ ---
+    // Размеры и координаты для ПК
     let topTextW = domTopText ? domTopText.offsetWidth : vw(324);
     let topTextH = domTopText ? domTopText.offsetHeight : vw(64);
     
@@ -61,9 +72,6 @@ window.addEventListener("load", () => {
 
     const centerX = baseWidth / 2;
 
-    // ==========================================
-    // ПАРАМЕТРЫ ЦЕНТРАЛЬНОГО БАННЕРА
-    // ==========================================
     const bannerW = vw(430); 
     const bannerH = vw(600);
     const rope1Len = vw(65);
@@ -75,14 +83,11 @@ window.addEventListener("load", () => {
     const bannerY = topTextY + (topTextH / 2) + rope2Len + (bannerH / 2); 
     const buttonY = bannerY + (bannerH / 2) + rope3Len + (btnH / 2);  
 
-    // ==========================================
-    // ПАРАМЕТРЫ БОКОВЫХ БАННЕРОВ
-    // ==========================================
-    const sideBannerW = vw(375); // Ширина боковых баннеров
-    const sideBannerH = vw(527); // Высота боковых баннеров
-    const sideRopeLen = vw(250); // Длина их веревок
-    const sideOffset = vw(500);  // Отступ от центра влево и вправо (увеличьте, если наезжают друг на друга)
-    const sideImgScale = 0.25 * (window.innerWidth / 1920); // Масштаб картинок для боковых
+    const sideBannerW = vw(375);
+    const sideBannerH = vw(527);
+    const sideRopeLen = vw(250);
+    const sideOffset = vw(500);  
+    const sideImgScale = 0.25 * (window.innerWidth / 1920);
 
     const leftX = centerX - sideOffset;
     const rightX = centerX + sideOffset;
@@ -90,7 +95,7 @@ window.addEventListener("load", () => {
 
     const ropeLineWidth = Math.max(vw(5), 2);
 
-    // --- ФИЗИКА: ЦЕНТРАЛЬНАЯ ОСЬ ---
+    // --- ФИЗИЧЕСКИЕ ТЕЛА ---
     const topAnchor = { x: centerX, y: anchorY + overlapY };
 
     const topTextBody = Bodies.rectangle(centerX, topTextY + overlapY, topTextW, topTextH, {
@@ -124,7 +129,6 @@ window.addEventListener("load", () => {
         render: { strokeStyle: '#D9D9D9', lineWidth: ropeLineWidth, anchors: false }
     });
 
-    // --- ФИЗИКА: ЛЕВЫЙ БАННЕР ---
     const leftAnchor = { x: leftX, y: anchorY + overlapY };
     
     const leftBannerBody = Bodies.rectangle(leftX, sideBannerY + overlapY, sideBannerW, sideBannerH, {
@@ -138,7 +142,6 @@ window.addEventListener("load", () => {
         render: { strokeStyle: '#D9D9D9', lineWidth: ropeLineWidth, anchors: false }
     });
 
-    // --- ФИЗИКА: ПРАВЫЙ БАННЕР ---
     const rightAnchor = { x: rightX, y: anchorY + overlapY };
     
     const rightBannerBody = Bodies.rectangle(rightX, sideBannerY + overlapY, sideBannerW, sideBannerH, {
@@ -152,13 +155,12 @@ window.addEventListener("load", () => {
         render: { strokeStyle: '#D9D9D9', lineWidth: ropeLineWidth, anchors: false }
     });
 
-    // Добавляем все объекты в мир
     Composite.add(world, [
         topTextBody, rope1, bannerBody, rope2, buttonBody, rope3,
         leftBannerBody, leftRope, rightBannerBody, rightRope
     ]);
 
-    // --- НАСТРОЙКА МЫШИ ---
+    // --- НАСТРОЙКА МЫШИ ДЛЯ ПК ---
     const mouse = Mouse.create(screen4);
     Mouse.setOffset(mouse, { x: 0, y: overlapY });
 
@@ -169,14 +171,11 @@ window.addEventListener("load", () => {
 
     mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
     mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
-    mouse.element.removeEventListener('touchstart', mouse.mousedown);
-    mouse.element.removeEventListener('touchmove', mouse.mousemove);
-    mouse.element.removeEventListener('touchend', mouse.mouseup);
 
     Composite.add(world, mouseConstraint);
     render.mouse = mouse;
 
-    // --- СИНХРОНИЗАЦИЯ HTML-ЭЛЕМЕНТОВ ---
+    // --- СИНХРОНИЗАЦИЯ HTML И ФИЗИКИ ---
     Events.on(engine, 'afterUpdate', function() {
         const posBtn = buttonBody.position;
         const angleBtn = buttonBody.angle;
@@ -193,6 +192,8 @@ window.addEventListener("load", () => {
 
     // --- РЕСАЙЗ ОКНА ---
     window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) location.reload(); // Перезагружаем страницу, если ушли в мобилку
+
         baseWidth = screen4.clientWidth;
         baseHeight = screen4.clientHeight;
         
@@ -210,7 +211,7 @@ window.addEventListener("load", () => {
 
         if (marquee) {
             const newAnchorY = marquee.offsetTop + marquee.offsetHeight;
-            const newSideOffset = vw(420); // Пересчитываем отступ
+            const newSideOffset = vw(500);
 
             rope1.pointA.y = newAnchorY + overlapY;
             rope1.pointA.x = baseWidth / 2;
