@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/jelly.js" defer></script>
     <script src="js/banners.js" defer></script>
     <script src="js/pixels.js" defer></script>
     <title>ONEIRO — Главная</title>
@@ -15,7 +15,7 @@
 <body>
 
     <header>
-        <div class="nav-container">
+        <div class="nav-container desktop-only">
             <div class="nav-links">
                 <a href="index.html" class="nav-link">ONEIRO</a>
                 <a href="about.html" class="nav-link">о нас</a>
@@ -23,6 +23,12 @@
                 <a href="research.html" class="nav-link">исследование сна</a>
                 <a href="events.html" class="nav-link">события</a>
                 <a href="booking.html" class="nav-link">запись на прием</a>
+            </div>
+        </div>
+        <div class="nav-container-mob mobile-only">
+            <div class="nav-links-mob">
+                <div class="oneiro-btn"> <a href="index.html" class="nav-link-mob">ONEIRO</a> </div>
+                <div class="lines-btn"> <img src="assets/images/lines-btn.svg " alt="" class="lines-btn-img"></div>
             </div>
         </div>
     </header>
@@ -33,15 +39,21 @@
             <img src="assets/images/middle-blue-pattern.png" alt="" class="middle-blue-pattern">
         </div>
 
-        <img src="assets/images/head-text.svg" alt="" class="head-text">
+        <img src="assets/images/head-text.svg" alt="" class="head-text desktop-only" >
+        <img src="assets/images/head-text-mob.svg" alt="" class="head-text-mob mobile-only" >
         <div class="about-container">
-            <div class="about-text">
+            <div class="about-text desktop-only">
                 <p>
                     мы специализированный медицинский центр,<br>
                     где наука встречается с заботой. но делаем это<br>
                     так, как не делает больше никто. мы убеждены,<br>
                     что эффективное лечение не должно сопровождаться<br>
                     стрессом и страхом.
+                </p>
+            </div>
+            <div class="about-text-mob mobile-only">
+                <p>
+                    мы специализированный медицинский центр, где наука встречается с заботой. Но делаем это так, как не делает больше никто. Мы убеждены, что эффективное лечение не должно сопровождаться стрессом и страхом. 
                 </p>
             </div>
             <div class="about-button">

@@ -1,7 +1,5 @@
-// --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ---
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
-// --- ШЕЙДЕРЫ ---
 const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -32,7 +30,6 @@ const fragmentShader = `
   }
 `;
 
-// --- КЛАСС WEBGL ЭФФЕКТА ---
 class Sketch {
   constructor(options) {
     this.container = options.dom;
@@ -55,28 +52,21 @@ class Sketch {
     this.isPlaying = true;
     
     this.settings = {
-      grid: 50,      // Разрешение сетки искажений
-      mouse: 0.15,   // Радиус действия мыши
-      strength: 0.3, // Сила смазывания (сделал чуть мягче для гладкости)
-      relaxation: 0.9 // Затухание
+      grid: 50,
+      mouse: 0.15,
+      strength: 0.3,
+      relaxation: 0.9
     };
 
     this.mouse = { x: 0, y: 0, vX: 0, vY: 0, prevX: 0, prevY: 0 };
 
-    // --- ИСПРАВЛЕНИЕ: Локальные координаты мыши ---
     window.addEventListener('mousemove', (e) => {
-      // Получаем точные размеры и позицию контейнера на экране
       const rect = this.container.getBoundingClientRect();
-      
-      // Вычисляем позицию мыши строго внутри этого контейнера от 0 до 1
       const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - ((e.clientY - rect.top) / rect.height); // Y переворачиваем для WebGL
-      
-      // Считаем скорость движения
+      const y = 1.0 - ((e.clientY - rect.top) / rect.height);
       this.mouse.vX = x - this.mouse.prevX;
       this.mouse.vY = y - this.mouse.prevY;
       
-      // Обновляем координаты
       this.mouse.x = x;
       this.mouse.y = y;
 
@@ -113,7 +103,6 @@ class Sketch {
     const size = width * height;
     const data = new Float32Array(size * 4);
     
-    // Заполняем сетку
     for (let i = 0; i < size; i++) {
       const stride = i * 4;
       data[stride] = 0;
@@ -124,8 +113,6 @@ class Sketch {
 
     this.texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat, THREE.FloatType);
     
-    // --- ИСПРАВЛЕНИЕ: Сглаживание пикселей ---
-    // LinearFilter размывает переходы между ячейками сетки, делая эффект плавным
     this.texture.magFilter = this.texture.minFilter = THREE.LinearFilter;
 
     if (this.material) {
@@ -167,12 +154,10 @@ class Sketch {
     let gridMouseX = this.size * this.mouse.x;
     let gridMouseY = this.size * this.mouse.y; 
     let maxDist = this.size * this.settings.mouse;
-    let aspect = this.width / this.height; // Соотношение сторон для правильного круга
+    let aspect = this.width / this.height;
 
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
-
-        // Корректируем дистанцию с учетом соотношения сторон
         let distanceX = (gridMouseX - i) * aspect;
         let distanceY = (gridMouseY - j);
         let distance = Math.pow(distanceX, 2) + Math.pow(distanceY, 2);
@@ -195,7 +180,6 @@ class Sketch {
       data[i + 1] *= this.settings.relaxation;
     }
 
-    // Замедляем инерцию мыши
     this.mouse.vX *= 0.9;
     this.mouse.vY *= 0.9;
     this.texture.needsUpdate = true;
@@ -212,9 +196,7 @@ class Sketch {
   }
 }
 
-// ==========================================
-// --- ИНИЦИАЛИЗАЦИЯ НА СТРАНИЦЕ ---
-// ==========================================
+
 window.addEventListener("load", () => {
     const underlayImages = document.querySelectorAll('.underlay img');
 

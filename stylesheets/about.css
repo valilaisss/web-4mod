@@ -1,0 +1,9 @@
+.screen-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 4.69vw;
+    position: relative;
+    overflow-x: clip;
+    width: 100%;
+    height: 56.25vw;
+}
